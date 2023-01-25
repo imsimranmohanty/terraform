@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  labels:
+    app: db
+    namespace: my-namespace
+spec:
+  minReadyseconds: 10
+  replicas: 2
+  selector:
+    matchlabels:
+      app: db
+    matchExpressions:
+      -key: environment
+  statergy:
+    type: Rollingupdate
+    rollingupdate:
+      maxSurge: 25
+      maxUnavailabel: 25
+  template:
+    metadata:
+      name: db-pod
+      labels:
+      app: db
+    spec:
+      containers:
+      - name: db-container
+        image: postgress:15
+        ports:
+        - containerPort: 80
+          protocol: TCP
